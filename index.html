@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GRUPO FAMÍLIA</title>
+    <script defer src="https://drsmpinto-code.github.io/Real-Time-c/socket.io/socket.io.js"></script>
+    <script defer src="script.js"></script>
+    <style>
+         :root {
+            --main-bg: #f7f7f7;
+            --chat-bg: #ffffff;
+            --msg-bg: #e1f5fe;
+            --msg-color: #333;
+            --border-radius: 16px;
+            --font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--main-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        h1 {
+            margin-top: 16px;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+        
+        #chat-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            height: 100%;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        /* Esconde o input original */
+        
+        #file-input {
+            display: none;
+        }
+        /* Estilo do botão de anexo (clipe) */
+        
+        #file-label {
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            color: #3498db;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+        
+        #file-label:hover {
+            color: #2980b9;
+        }
+        
+        #message-container {
+            flex: 1;
+            background-color: var(--chat-bg);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+        }
+        
+        #message-container div {
+            background-color: var(--msg-bg);
+            color: var(--msg-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 1.1rem;
+        }
+        
+        #send-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #message-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        
+        #send-button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        #send-button:hover {
+            background-color: #2980b9;
+        }
+        /* Responsividade */
+        
+        @media (max-width: 768px) {
+            #chat-wrapper {
+                padding: 10px;
+            }
+            #message-input,
+            #send-button {
+                font-size: 1rem;
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            #message-input {
+                font-size: 0.95rem;
+            }
+            #send-button {
+                font-size: 0.95rem;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>GRUPO FAMÍLIA</h1>
+    <div id="chat-wrapper">
+        <div id="message-container"></div>
+        <form id="send-container">
+            <label for="file-input" id="file-label" title="Enviar anexo">
+        📎
+    </label>
+            <input type="file" id="file-input" accept="image/*,.pdf,.mp4,.mov,.avi,.doc,.docx,.xlsx,.zip" />
+            <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
+            <button type="submit" id="send-button">Enviar</button>
+        </form>
+
+    </div>
+</body>
+
+</html>
