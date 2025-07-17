@@ -14,7 +14,6 @@
                 --main-bg: #f7f7f7;
                 --chat-bg: #ffffff;
                 --msg-bg: #e1f5fe;
-                --msg-color: #333;
                 --border-radius: 16px;
                 --font-family: 'Segoe UI', sans-serif;
             }
@@ -75,10 +74,31 @@
                 overflow-y: auto;
                 box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
                 margin-bottom: 12px;
+                display: flex;
+                flex-direction: column;
             }
             
+
+            /* Estilo para mensagens enviadas pelo próprio utilizador */
+            .message.self {
+                align-self: flex-end;
+                background-color: #e09942;
+                color: white;
+                text-align: right;
+            }
+
+            /* Mensagens de outros */
+            .message.other {
+                align-self: flex-start;
+                background-color: #a9d6eb;
+                color: #333;
+                text-align: left;
+            }
+
+
+
             #message-container div {
-                background-color: var(--msg-bg);
+                
                 color: var(--msg-color);
                 padding: 10px 14px;
                 border-radius: 12px;
@@ -86,6 +106,7 @@
                 max-width: 80%;
                 word-wrap: break-word;
                 font-size: 1.1rem;
+                
             }
             
             #send-container {
@@ -116,6 +137,26 @@
             #send-button:hover {
                 background-color: #d86c00;
             }
+
+            #all-users {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+                background-color: #d4edda; /* verde claro */
+                padding: 10px;
+                border-radius: 12px;
+                margin: 10px 0;
+                justify-content: center;
+            }
+
+            #all-users div {
+                background-color: #a8e6a3; /* verde ainda mais claro para cada utilizador */
+                padding: 6px 12px;
+                border-radius: 20px;
+                font-weight: bold;
+                color: #2e7d32;
+            }
+
             /* Responsividade */
             
             @media (max-width: 768px) {
@@ -146,9 +187,7 @@
 
     <body>
         <h1>PinTalk</h1>
-        <div id="all-users">
-            
-        </div>
+        <div id="all-users"></div>
 
 
 
