@@ -137,6 +137,50 @@
             transition: background-color 0.2s ease;
         }
         
+        .emoji-picker,
+        .ascii-picker {
+            position: absolute;
+            bottom: 70px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .emoji-picker span,
+        .ascii-picker span {
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 8px;
+            transition: background-color 0.2s ease;
+        }
+        
+        .emoji-picker span:hover,
+        .ascii-picker span:hover {
+            background-color: #f0f0f0;
+        }
+        
+        #emoji-button,
+        #ascii-button {
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0 6px;
+            color: #555;
+        }
+        
+        #emoji-button:hover,
+        #ascii-button:hover {
+            color: #000;
+        }
+        
         #send-button:hover {
             background-color: #d86c00;
         }
@@ -202,7 +246,13 @@
             📎
         </label>
             <input type="file" id="file-input" accept="image/*,.pdf,.mp4,.mov,.avi,.doc,.docx,.xlsx,.zip" />
+            <button type="button" id="emoji-button" title="Emoji">😊</button>
+            <button type="button" id="ascii-button" title="ASCII">☆</button>
+            <div id="emoji-picker" class="emoji-picker" style="display:none;"></div>
+            <div id="ascii-picker" class="ascii-picker" style="display:none;"></div>
+
             <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
+
             <button type="submit" id="send-button">Enviar</button>
         </form>
 
