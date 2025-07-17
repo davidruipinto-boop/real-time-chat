@@ -10,199 +10,203 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="script.js"></script>
         <style>
-            :root {
-                --main-bg: #f7f7f7;
-                --chat-bg: #ffffff;
-                --msg-bg: #e1f5fe;
-                --border-radius: 16px;
-                --font-family: 'Segoe UI', sans-serif;
-            }
-            
-            body {
-                margin: 0;
-                padding: 0;
-                font-family: var(--font-family);
-                background-color: var(--main-bg);
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                height: 100vh;
-            }
-            
-            h1 {
-                margin-top: 16px;
-                font-size: 2rem;
-                color: #2c3e50;
-            }
-            
+         :root {
+            --main-bg: #f7f7f7;
+            --chat-bg: #ffffff;
+            --msg-bg: #e1f5fe;
+            --border-radius: 16px;
+            --font-family: 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-family);
+            background-color: var(--main-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        h1 {
+            margin-top: 16px;
+            font-size: 2rem;
+            color: #2c3e50;
+        }
+        
+        .message img,
+        .message video,
+        .message audio,
+        .message a {
+            margin-top: 8px;
+            display: block;
+        }
+        
+        #chat-wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px;
+            height: 80%;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        /* Esconde o input original */
+        
+        #file-input {
+            display: none;
+        }
+        /* Estilo do botão de anexo (clipe) */
+        
+        #file-label {
+            font-size: 1.6rem;
+            cursor: pointer;
+            padding: 0 10px;
+            display: flex;
+            align-items: center;
+            color: #3498db;
+            transition: color 0.2s ease;
+            user-select: none;
+        }
+        
+        #file-label:hover {
+            color: #2980b9;
+        }
+        
+        #message-container {
+            flex: 1;
+            background-color: var(--chat-bg);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            overflow-y: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+        /* Estilo para mensagens enviadas pelo próprio utilizador */
+        
+        .message.self {
+            align-self: flex-end;
+            background-color: #e09942;
+            color: white;
+            text-align: right;
+        }
+        /* Mensagens de outros */
+        
+        .message.other {
+            align-self: flex-start;
+            background-color: #a9d6eb;
+            color: #333;
+            text-align: left;
+        }
+        
+        #message-container div {
+            color: var(--msg-color);
+            padding: 10px 14px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 1.1rem;
+        }
+        
+        #send-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        #message-input {
+            flex: 1;
+            padding: 12px;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        
+        #send-button {
+            padding: 12px 20px;
+            font-size: 1.1rem;
+            background-color: #C76E00;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        #send-button:hover {
+            background-color: #d86c00;
+        }
+        
+        #all-users {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            background-color: #d4edda;
+            /* verde claro */
+            padding: 10px;
+            border-radius: 12px;
+            margin: 10px 0;
+            justify-content: center;
+        }
+        
+        #all-users div {
+            background-color: #a8e6a3;
+            /* verde ainda mais claro para cada utilizador */
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        /* Responsividade */
+        
+        @media (max-width: 768px) {
             #chat-wrapper {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                max-width: 600px;
-                height: 80%;
-                padding: 16px;
-                box-sizing: border-box;
-            }
-            /* Esconde o input original */
-            
-            #file-input {
-                display: none;
-            }
-            /* Estilo do botão de anexo (clipe) */
-            
-            #file-label {
-                font-size: 1.6rem;
-                cursor: pointer;
-                padding: 0 10px;
-                display: flex;
-                align-items: center;
-                color: #3498db;
-                transition: color 0.2s ease;
-                user-select: none;
-            }
-            
-            #file-label:hover {
-                color: #2980b9;
-            }
-            
-            #message-container {
-                flex: 1;
-                background-color: var(--chat-bg);
-                border-radius: var(--border-radius);
-                padding: 16px;
-                overflow-y: auto;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-                margin-bottom: 12px;
-                display: flex;
-                flex-direction: column;
-            }
-            
-
-            /* Estilo para mensagens enviadas pelo próprio utilizador */
-            .message.self {
-                align-self: flex-end;
-                background-color: #e09942;
-                color: white;
-                text-align: right;
-            }
-
-            /* Mensagens de outros */
-            .message.other {
-                align-self: flex-start;
-                background-color: #a9d6eb;
-                color: #333;
-                text-align: left;
-            }
-
-
-
-            #message-container div {
-                
-                color: var(--msg-color);
-                padding: 10px 14px;
-                border-radius: 12px;
-                margin-bottom: 10px;
-                max-width: 80%;
-                word-wrap: break-word;
-                font-size: 1.1rem;
-                
-            }
-            
-            #send-container {
-                display: flex;
-                gap: 10px;
-            }
-            
-            #message-input {
-                flex: 1;
-                padding: 12px;
-                font-size: 1.1rem;
-                border-radius: 12px;
-                border: 1px solid #ccc;
-                outline: none;
-            }
-            
-            #send-button {
-                padding: 12px 20px;
-                font-size: 1.1rem;
-                background-color: #C76E00;
-                color: white;
-                border: none;
-                border-radius: 12px;
-                cursor: pointer;
-                transition: background-color 0.2s ease;
-            }
-            
-            #send-button:hover {
-                background-color: #d86c00;
-            }
-
-            #all-users {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 10px;
-                background-color: #d4edda; /* verde claro */
                 padding: 10px;
-                border-radius: 12px;
-                margin: 10px 0;
-                justify-content: center;
             }
-
-            #all-users div {
-                background-color: #a8e6a3; /* verde ainda mais claro para cada utilizador */
-                padding: 6px 12px;
-                border-radius: 20px;
-                font-weight: bold;
-                color: #2e7d32;
+            #message-input,
+            #send-button {
+                font-size: 1rem;
+                padding: 10px;
             }
-
-            /* Responsividade */
-            
-            @media (max-width: 768px) {
-                #chat-wrapper {
-                    padding: 10px;
-                }
-                #message-input,
-                #send-button {
-                    font-size: 1rem;
-                    padding: 10px;
-                }
-                h1 {
-                    font-size: 1.5rem;
-                }
+            h1 {
+                font-size: 1.5rem;
             }
-            
-            @media (max-width: 480px) {
-                #message-input {
-                    font-size: 0.95rem;
-                }
-                #send-button {
-                    font-size: 0.95rem;
-                    padding: 10px 16px;
-                }
+        }
+        
+        @media (max-width: 480px) {
+            #message-input {
+                font-size: 0.95rem;
             }
-        </style>
-    </head>
+            #send-button {
+                font-size: 0.95rem;
+                padding: 10px 16px;
+            }
+        }
+    </style>
+</head>
 
-    <body>
-        <h1>PinTalk</h1>
-        <div id="all-users"></div>
+<body>
+    <h1>PinTalk</h1>
+    <div id="all-users"></div>
 
 
 
-        <div id="chat-wrapper">
-            <div id="message-container"></div>
-            <form id="send-container">
-                <label for="file-input" id="file-label" title="Enviar anexo">
+    <div id="chat-wrapper">
+        <div id="message-container"></div>
+        <form id="send-container">
+            <label for="file-input" id="file-label" title="Enviar anexo">
             📎
         </label>
-                <input type="file" id="file-input" accept="image/*,.pdf,.mp4,.mov,.avi,.doc,.docx,.xlsx,.zip" />
-                <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
-                <button type="submit" id="send-button">Enviar</button>
-            </form>
+            <input type="file" id="file-input" accept="image/*,.pdf,.mp4,.mov,.avi,.doc,.docx,.xlsx,.zip" />
+            <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
+            <button type="submit" id="send-button">Enviar</button>
+        </form>
 
-        </div>
-    </body>
+    </div>
+</body>
 
 </html>
