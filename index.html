@@ -10,6 +10,12 @@
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="script.js"></script>
         <style>
+        html,
+        body {
+            overflow: hidden;
+            height: 100%;
+        }
+        
          :root {
             --main-bg: #f7f7f7;
             --chat-bg: #ffffff;
@@ -19,8 +25,8 @@
         }
         
         body {
+            padding-top: 60px;
             margin: 0;
-            padding: 0;
             font-family: var(--font-family);
             background-color: var(--main-bg);
             display: flex;
@@ -137,6 +143,28 @@
             transition: background-color 0.2s ease;
         }
         
+        #app-footer {
+            width: 100vw;
+            background: linear-gradient(90deg, #F2A65A, #C76E00);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            margin-top: 10px;
+        }
+        
+        #footer-logo {
+            height: 30px;
+        }
+        
         .emoji-picker,
         .ascii-picker {
             position: absolute;
@@ -181,8 +209,49 @@
             color: #000;
         }
         
+        #app-header {
+            width: 100vw;
+            height: 60px;
+            background: linear-gradient(90deg, #C76E00, #F2A65A);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+        
+        #app-logo {
+            height: 40px;
+        }
+        
+        #app-header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: white;
+            flex-grow: 1;
+            text-align: center;
+        }
+        
+        #options-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: white;
+            cursor: pointer;
+        }
+        
         #send-button:hover {
             background-color: #d86c00;
+        }
+        
+        #admin-options {
+            height: 50px;
+            font-size: 25px;
+            width: 50px;
         }
         
         #all-users {
@@ -233,8 +302,21 @@
     </style>
 </head>
 
-<body>
+<header id="app-header">
+    <img src="logo_PinTalk.png" alt="Logo" id="app-logo">
     <h1>PinTalk</h1>
+    <button id="admin-options">⚙️</button>
+    <div id="admin-panel" style="display: none;">
+        <input id="target-user" placeholder="Nome do utilizador" />
+        <button onclick="kickUser()">Expulsar</button>
+        <button onclick="blockUser()">Bloquear envio</button>
+        <button onclick="unblockUser()">Desbloquear envio</button>
+    </div>
+
+</header>
+
+
+<body>
     <div id="all-users"></div>
 
 
@@ -258,5 +340,9 @@
 
     </div>
 </body>
+<footer id="app-footer">
+    <img src="logo_PinTalk.png" alt="Logo" id="footer-logo">
+    <span>Author: David Pinto</span>
+</footer>
 
 </html>
