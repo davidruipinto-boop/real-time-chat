@@ -12,11 +12,12 @@ while (!name || name.length > 20) {
         alert('O nome não pode ter mais de 20 caracteres.');
     }
 }
-
-appendMessage('Entraste no chat');
+appendMessage('Entraste no chat', true);
 socket.emit('new-user', name);
+
 socket.on('chat-message', data => {
-    appendMessage(`${data.name}: ${data.message}`);
+    appendMessage(`${data.name}: ${data.message}`, false);
+
 });
 
 socket.on('file-message', data => {
@@ -24,11 +25,11 @@ socket.on('file-message', data => {
 });
 
 socket.on('user-connected', name => {
-    appendMessage(`${name} entrou no chat`);
+    appendMessage(`${name} entrou no chat`, false);
 });
 
 socket.on('user-disconnected', name => {
-    appendMessage(`${name} saiu do chat`);
+    appendMessage(`${name} saiu do chat`, false);
 });
 
 messageForm.addEventListener('submit', e => {
@@ -54,19 +55,23 @@ messageForm.addEventListener('submit', e => {
     }
 
     if (message.trim() !== '') {
-        appendMessage(`Tu: ${message}`);
+        appendMessage(`${message}`, true);
         socket.emit('send-chat-message', message);
         messageInput.value = '';
     }
 });
 
-function appendMessage(message) {
+function appendMessage(message, isSelf = false) {
     const messageElement = document.createElement('div');
     messageElement.innerText = message;
+    messageElement.classList.add('message');
+    messageElement.classList.add(isSelf ? 'self' : 'other');
+
     messageContainer.append(messageElement);
     messageContainer.scrollTop = messageContainer.scrollHeight;
-
 }
+
+
 
 function appendFile(data) {
     const fileElement = document.createElement('div');
