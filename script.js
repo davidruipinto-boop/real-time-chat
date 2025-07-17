@@ -114,8 +114,8 @@ messageForm.addEventListener('submit', e => {
     const file = fileInput.files[0];
 
     if (file) {
-        if (file.size > 0.5 * 1024 * 1024) { // 5MB limite
-            alert('O ficheiro é demasiado grande (máx. 0.5MB).');
+        if (file.size > 0.7 * 1024 * 1024) { // 5MB limite
+            alert('O ficheiro é demasiado grande (máx. 0.7MB).');
             return;
         }
 
