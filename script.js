@@ -70,7 +70,7 @@ function appendFile(data) {
         img.alt = data.fileName;
         img.style.maxWidth = '300px';
         fileElement.append(`${data.name} enviou uma imagem:`, img);
-    } else if (fileType.startsWith('video/')) {
+    } else if (fileType.startsWith('mp4/')) {
         const video = document.createElement('video');
         video.src = data.fileData;
         video.controls = true;
