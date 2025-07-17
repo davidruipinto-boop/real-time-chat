@@ -7,7 +7,6 @@ const fileInput = document.getElementById('file-input');
 const name = prompt('Qual é o teu nome?');
 appendMessage('Entraste no chat');
 socket.emit('new-user', name);
-
 socket.on('chat-message', data => {
     appendMessage(`${data.name}: ${data.message}`);
 });
@@ -57,11 +56,9 @@ function appendMessage(message) {
     const messageElement = document.createElement('div');
     messageElement.innerText = message;
     messageContainer.append(messageElement);
-
-    // Scroll automático para o fundo
     messageContainer.scrollTop = messageContainer.scrollHeight;
-}
 
+}
 
 function appendFile(data) {
     const fileElement = document.createElement('div');
