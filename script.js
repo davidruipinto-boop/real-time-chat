@@ -57,15 +57,17 @@ function appendMessage(message) {
     const messageElement = document.createElement('div');
     messageElement.innerText = message;
     messageContainer.append(messageElement);
+
+    // Scroll automático para o fundo
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
+
 
 function appendFile(data) {
     const fileElement = document.createElement('div');
     const fileType = data.fileType;
 
     if (fileType.startsWith('image/')) {
-        // Mostrar imagem
         const img = document.createElement('img');
         img.src = data.fileData;
         img.alt = data.fileName;
@@ -78,7 +80,6 @@ function appendFile(data) {
         video.style.maxWidth = '300px';
         fileElement.append(video);
     } else {
-        // Outros ficheiros - criar link de download
         const link = document.createElement('a');
         link.href = data.fileData;
         link.download = data.fileName;
@@ -87,8 +88,11 @@ function appendFile(data) {
     }
 
     messageContainer.append(fileElement);
+
+    // Scroll automático para o fundo
     messageContainer.scrollTop = messageContainer.scrollHeight;
 }
+
 
 const allUsersContainer = document.getElementById('all-users');
 
