@@ -87,3 +87,20 @@ function appendFile(data) {
 
     messageContainer.append(fileElement);
 }
+
+const allUsersContainer = document.getElementById('all-users');
+
+socket.on('update-user-list', users => {
+    updateUserList(users);
+});
+
+function updateUserList(users) {
+    allUsersContainer.innerHTML = ''; // Limpa a lista antiga
+
+    users.forEach(user => {
+        const userElement = document.createElement('div');
+        userElement.innerText = user;
+        allUsersContainer.append(userElement);
+    });
+}
+
