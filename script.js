@@ -4,7 +4,15 @@ const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 const fileInput = document.getElementById('file-input');
 
-const name = prompt('Qual é o teu nome?');
+let name = '';
+
+while (!name || name.length > 20) {
+    name = prompt('Qual é o teu nome? (máx. 20 caracteres)');
+    if (name && name.length > 20) {
+        alert('O nome não pode ter mais de 20 caracteres.');
+    }
+}
+
 appendMessage('Entraste no chat');
 socket.emit('new-user', name);
 socket.on('chat-message', data => {
