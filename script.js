@@ -3,6 +3,65 @@ const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 const fileInput = document.getElementById('file-input');
+// Exemplo de emojis e ASCII faces
+const emojis = ["😊", "😂", "❤️", "👍", "🥺", "😍", "🔥"];
+const asciiFaces = ["¯\\_(ツ)_/¯", "( ͡° ͜ʖ ͡°)", "(╯°□°）╯︵ ┻━┻", "(｡♥‿♥｡)", "(▀̿Ĺ̯▀̿ ̿)"];
+
+const emojiBtn = document.getElementById("emoji-button");
+const asciiBtn = document.getElementById("ascii-button");
+const emojiPicker = document.getElementById("emoji-picker");
+const asciiPicker = document.getElementById("ascii-picker");
+
+function populatePicker(picker, items) {
+    picker.innerHTML = '';
+    items.forEach(char => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        span.style.cursor = 'pointer';
+        span.onclick = (e) => {
+            e.stopPropagation(); // Impede que o clique feche o picker
+            messageInput.value += char;
+            messageInput.focus();
+            // Não fecha automaticamente!
+        };
+        picker.appendChild(span);
+    });
+}
+
+let emojiOpen = false;
+let asciiOpen = false;
+
+emojiBtn.onclick = (e) => {
+    e.stopPropagation();
+    asciiPicker.style.display = 'none';
+    asciiOpen = false;
+
+    emojiOpen = !emojiOpen;
+    emojiPicker.style.display = emojiOpen ? 'flex' : 'none';
+
+    if (emojiOpen) populatePicker(emojiPicker, emojis);
+};
+
+asciiBtn.onclick = (e) => {
+    e.stopPropagation();
+    emojiPicker.style.display = 'none';
+    emojiOpen = false;
+
+    asciiOpen = !asciiOpen;
+    asciiPicker.style.display = asciiOpen ? 'flex' : 'none';
+
+    if (asciiOpen) populatePicker(asciiPicker, asciiFaces);
+};
+
+// Fecha os pickers ao enviar mensagem
+document.getElementById('send-container').addEventListener('submit', () => {
+    emojiPicker.style.display = 'none';
+    asciiPicker.style.display = 'none';
+    emojiOpen = false;
+    asciiOpen = false;
+});
+
+
 
 let name = '';
 
@@ -12,13 +71,23 @@ while (!name || name.length > 20) {
         alert('O nome não pode ter mais de 20 caracteres.');
     }
 }
-appendMessage('Entraste no chat', true);
+const now = new Date();
+const hours = now.getHours().toString().padStart(2, '0');
+const minutes = now.getMinutes().toString().padStart(2, '0');
+const time = `[${hours}:${minutes}]`;
+appendMessage(`<strong>${time}</strong> Entraste no chat`, true);
+
 socket.emit('new-user', name);
 
 socket.on('chat-message', data => {
-    appendMessage(`<strong>${data.name}:</strong> ${data.message}`, false);
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const time = `${hours}:${minutes}`;
 
+    appendMessage(`<strong>[${time}]</strong> <strong>${data.name}:</strong> ${data.message}`, false);
 });
+
 
 socket.on('file-message', data => {
     appendFile(data, false); // Estilo de outros
@@ -26,12 +95,17 @@ socket.on('file-message', data => {
 
 
 socket.on('user-connected', name => {
-    appendMessage(`${name} entrou no chat`, false);
+    const now = new Date();
+    const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+    appendMessage(`<strong>${time}</strong> <strong>${name}</strong> entrou no chat`, false);
 });
 
 socket.on('user-disconnected', name => {
-    appendMessage(`${name} saiu do chat`, false);
+    const now = new Date();
+    const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+    appendMessage(`<strong>${time}</strong> <strong>${name}</strong> saiu do chat`, false);
 });
+
 
 messageForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -40,8 +114,8 @@ messageForm.addEventListener('submit', e => {
     const file = fileInput.files[0];
 
     if (file) {
-        if (file.size > 5 * 1024 * 1024) { // 5MB limite
-            alert('O ficheiro é demasiado grande (máx. 5MB).');
+        if (file.size > 0.5 * 1024 * 1024) { // 5MB limite
+            alert('O ficheiro é demasiado grande (máx. 0.5MB).');
             return;
         }
 
@@ -66,10 +140,16 @@ messageForm.addEventListener('submit', e => {
 
 
     if (message.trim() !== '') {
-        appendMessage(`${message}`, true);
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const time = `${hours}:${minutes}`;
+
+        appendMessage(`<strong>[${time}]</strong> <strong>Tu:</strong> ${message}`, true);
         socket.emit('send-chat-message', message);
         messageInput.value = '';
     }
+
 });
 
 function appendMessage(message, isSelf = false) {
@@ -84,6 +164,8 @@ function appendMessage(message, isSelf = false) {
 
 
 
+
+
 function appendFile(data, isSelf = false) {
     const fileElement = document.createElement('div');
     fileElement.classList.add('message');
@@ -93,11 +175,14 @@ function appendFile(data, isSelf = false) {
 
     // Imagem
     if (fileType.startsWith('image/')) {
+
         const img = document.createElement('img');
         img.src = data.fileData;
         img.alt = data.fileName;
         img.style.maxWidth = '300px';
-        fileElement.innerHTML = `<strong>${data.name} enviou uma imagem:</strong><br/>`;
+        const now = new Date();
+        const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+        fileElement.innerHTML = `<strong>${time} ${data.name} enviou uma imagem:</strong><br/>`;
         fileElement.appendChild(img);
     }
     // Vídeo
@@ -106,7 +191,9 @@ function appendFile(data, isSelf = false) {
         video.src = data.fileData;
         video.controls = true;
         video.style.maxWidth = '300px';
-        fileElement.innerHTML = `<strong>${data.name} enviou um vídeo:</strong><br/>`;
+        const now = new Date();
+        const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+        fileElement.innerHTML = `<strong>${time} ${data.name} enviou um vídeo:</strong><br/>`;
         fileElement.appendChild(video);
     }
     // Áudio
@@ -114,7 +201,9 @@ function appendFile(data, isSelf = false) {
         const audio = document.createElement('audio');
         audio.src = data.fileData;
         audio.controls = true;
-        fileElement.innerHTML = `<strong>${data.name} enviou um áudio:</strong><br/>`;
+        const now = new Date();
+        const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+        fileElement.innerHTML = `<strong>${time} ${data.name} enviou um áudio:</strong><br/>`;
         fileElement.appendChild(audio);
     }
     // Qualquer outro tipo de ficheiro
@@ -122,7 +211,9 @@ function appendFile(data, isSelf = false) {
         const link = document.createElement('a');
         link.href = data.fileData;
         link.download = data.fileName;
-        link.innerText = `${data.name} enviou: ${data.fileName}`;
+        const now = new Date();
+        const time = `[${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}]`;
+        link.innerText = `${time}   ${data.name} enviou: ${data.fileName}`;
         fileElement.appendChild(link);
     }
 
