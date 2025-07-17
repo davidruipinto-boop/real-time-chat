@@ -57,6 +57,7 @@ function appendMessage(message) {
     const messageElement = document.createElement('div');
     messageElement.innerText = message;
     messageContainer.append(messageElement);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
 function appendFile(data) {
@@ -86,6 +87,7 @@ function appendFile(data) {
     }
 
     messageContainer.append(fileElement);
+    messageContainer.scrollTop = messageContainer.scrollHeight;
 }
 
 const allUsersContainer = document.getElementById('all-users');
