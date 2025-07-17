@@ -70,12 +70,12 @@ function appendFile(data) {
         img.alt = data.fileName;
         img.style.maxWidth = '300px';
         fileElement.append(`${data.name} enviou uma imagem:`, img);
-    } else if (fileType.startsWith('mp4/')) {
+    } else if (fileType.startsWith('video/')) {
         const video = document.createElement('video');
         video.src = data.fileData;
         video.controls = true;
         video.style.maxWidth = '300px';
-        fileElement.append(`${data.name} enviou um vídeo:`, video);
+        fileElement.append(video);
     } else {
         // Outros ficheiros - criar link de download
         const link = document.createElement('a');
