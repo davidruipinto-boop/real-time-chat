@@ -12,7 +12,7 @@ let pass_certa = false;
 
 while (pass_certa == false) {
     pass = prompt('Qual é a password');
-    if (pass != '210807') {
+    if (pass != '090109') {
         alert('Password errada');
     }
     else pass_certa = true;
