@@ -4,66 +4,22 @@ const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 const fileInput = document.getElementById('file-input');
 // Exemplo de emojis e ASCII faces
-const emojis = ["😊", "😂", "❤️", "👍", "🥺", "😍", "🔥"];
-const asciiFaces = ["¯\\_(ツ)_/¯", "( ͡° ͜ʖ ͡°)", "(╯°□°）╯︵ ┻━┻", "(｡♥‿♥｡)", "(▀̿Ĺ̯▀̿ ̿)"];
-
-const emojiBtn = document.getElementById("emoji-button");
-const asciiBtn = document.getElementById("ascii-button");
-const emojiPicker = document.getElementById("emoji-picker");
-const asciiPicker = document.getElementById("ascii-picker");
-
-function populatePicker(picker, items) {
-    picker.innerHTML = '';
-    items.forEach(char => {
-        const span = document.createElement("span");
-        span.textContent = char;
-        span.style.cursor = 'pointer';
-        span.onclick = (e) => {
-            e.stopPropagation(); // Impede que o clique feche o picker
-            messageInput.value += char;
-            messageInput.focus();
-            // Não fecha automaticamente!
-        };
-        picker.appendChild(span);
-    });
-}
-
-let emojiOpen = false;
-let asciiOpen = false;
-
-emojiBtn.onclick = (e) => {
-    e.stopPropagation();
-    asciiPicker.style.display = 'none';
-    asciiOpen = false;
-
-    emojiOpen = !emojiOpen;
-    emojiPicker.style.display = emojiOpen ? 'flex' : 'none';
-
-    if (emojiOpen) populatePicker(emojiPicker, emojis);
-};
-
-asciiBtn.onclick = (e) => {
-    e.stopPropagation();
-    emojiPicker.style.display = 'none';
-    emojiOpen = false;
-
-    asciiOpen = !asciiOpen;
-    asciiPicker.style.display = asciiOpen ? 'flex' : 'none';
-
-    if (asciiOpen) populatePicker(asciiPicker, asciiFaces);
-};
-
-// Fecha os pickers ao enviar mensagem
-document.getElementById('send-container').addEventListener('submit', () => {
-    emojiPicker.style.display = 'none';
-    asciiPicker.style.display = 'none';
-    emojiOpen = false;
-    asciiOpen = false;
-});
-
 
 
 let name = '';
+let pass = '';
+let pass_certa = false;
+
+while (pass_certa == false) {
+    pass = prompt('Qual é a password');
+    if (pass != '210807') {
+        alert('Password errada');
+    }
+    else pass_certa = true;
+}
+
+
+
 
 while (!name || name.length > 20) {
     name = prompt('Qual é o teu nome? (máx. 20 caracteres)');
@@ -238,3 +194,94 @@ function updateUserList(users) {
         allUsersContainer.append(userElement);
     });
 }
+
+
+const insertButton = document.getElementById('insert-button');
+const insertPanel = document.getElementById('insert-panel');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const emojiTab = document.getElementById('emoji-tab');
+const asciiTab = document.getElementById('ascii-tab');
+
+// Mostrar/esconder o painel ao clicar no botão
+insertButton.addEventListener('click', () => {
+  const isVisible = insertPanel.style.display === 'flex';
+  insertPanel.style.display = isVisible ? 'none' : 'flex';
+});
+
+// Fechar painel apenas ao ENVIAR mensagem
+document.getElementById('send-container').addEventListener('submit', () => {
+  insertPanel.style.display = 'none';
+});
+
+// Alternar abas entre Emojis e ASCII
+tabButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    // Tornar botão ativo
+    tabButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Esconder todas as tabs
+    emojiTab.style.display = 'none';
+    asciiTab.style.display = 'none';
+
+    // Mostrar a tab correspondente
+    const tabId = btn.dataset.tab;
+    document.getElementById(`${tabId}-tab`).style.display = 'flex';
+  });
+});
+
+// Popular emojis
+const emojis = [
+  '😀','😃','😄','😁','😆','😅','😂','🤣','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','🤩','🥳','😏','😒','😞','😔','😟','😕','🙁','☹️','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😰','😥','😓'
+];
+emojiTab.innerHTML = emojis.map(e => `<span class="insert-item">${e}</span>`).join('');
+
+const asciiFaces = [
+    '¯\\_(ツ)_/¯', 
+    '( ͡° ͜ʖ ͡°)', 
+    '(╯°□°）╯︵ ┻━┻', 
+    'ʕ•ᴥ•ʔ', 
+    'ಠ_ಠ', 
+    '(ノಠ益ಠ)ノ彡┻━┻', 
+    '☜(⌒▽⌒)☞', 
+    '(͡• ͜ʖ ͡•)', 
+    '(ᵔᴥᵔ)', 
+    '(•‿•)', 
+    'ʕ•́ᴥ•̀ʔっ', 
+    'ʘ‿ʘ', 
+    '(ง ͠° ͟ل͜ ͡°)ง', 
+    '(▀̿Ĺ̯▀̿ ̿)', 
+    '(づ｡◕‿‿◕｡)づ', 
+    '(¬‿¬)', 
+    '◉_◉', 
+    '°Д°', 
+    '(•_•) ( •_•)>⌐■-■ (⌐■_■)',
+    'ヽ(・∀・)ﾉ',	
+    '(´• ω •`) ♡',	
+    '(//▽//)',
+    '(￣ヘ￣)',
+    '(凸ಠ益ಠ)凸',
+    '(╥_╥)',
+    '(×﹏×)',	
+    'Σ(°△°|||)',
+    'ᕕ( ᐛ )ᕗ',	
+    'ლ(ಠ_ಠ ლ)',
+    '(・_・;)',	
+    '(￢_￢)',	
+    'Σ(°ロ°)',
+    '(⊙_⊙)',	
+    '( ° ∀ ° )ﾉﾞ',
+    '(づ ◕‿◕ )づ',
+    '( ´-ω･)︻┻┳══━一'
+    ];
+
+
+asciiTab.innerHTML = asciiFaces.map(face => `<span class="insert-item">${face}</span>`).join('');
+// Inserir emoji/ASCII no campo de input
+insertPanel.addEventListener('click', e => {
+  if (e.target.classList.contains('insert-item')) {
+    const input = document.getElementById('message-input');
+    input.value += e.target.textContent;
+    input.focus();
+  }
+});
