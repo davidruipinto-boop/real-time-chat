@@ -9,9 +9,8 @@
     <link rel="icon" type="images/png" href="logo_PinTalk.png" /> 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="script.js"></script>
-        <style>
-        html,
-        body {
+    <style>
+        html{
             overflow: hidden;
             height: 100%;
         }
@@ -179,7 +178,103 @@
             max-width: 300px;
             z-index: 1000;
         }
-        
+        #insert-button {
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 6px;
+  color: #555;
+}
+
+#insert-button:hover {
+  color: #000;
+}
+
+.insert-panel {
+  position: absolute;
+  bottom: 130px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 10px;
+  max-width: 300px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.tab-content {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  height: 120px;
+}
+
+#emoji-tab span {
+  font-size: 24px;
+  padding: 8px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#ascii-tab span {
+  white-space: nowrap;
+  background: #f0f0f0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 6px;
+  display: inline-block;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.tab-btn {
+  flex: 1;
+  border: none;
+  background-color: #eee;
+  padding: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+}
+
+.tab-btn.active {
+  background-color: #fff;
+  border-bottom: 2px solid #fff;
+}
+
+.tab-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.tab-content span,
+.tab-content img {
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.tab-content span:hover,
+.tab-content img:hover {
+  background-color: #f0f0f0;
+}
+
         .emoji-picker span,
         .ascii-picker span {
             font-size: 1.5rem;
@@ -328,10 +423,19 @@
             📎
         </label>
             <input type="file" id="file-input" accept="image/*,.pdf,.mp4,.mov,.avi,.doc,.docx,.xlsx,.zip" />
-            <button type="button" id="emoji-button" title="Emoji">😊</button>
-            <button type="button" id="ascii-button" title="ASCII">☆</button>
-            <div id="emoji-picker" class="emoji-picker" style="display:none;"></div>
-            <div id="ascii-picker" class="ascii-picker" style="display:none;"></div>
+            <button type="button" id="insert-button" title="Emoji, ASCII e GIF">😊</button>
+
+        <div id="insert-panel" class="insert-panel" style="display: none;">
+        <div class="tab-header">
+            <button class="tab-btn active" data-tab="emoji">Emoji</button>
+            <button class="tab-btn" data-tab="ascii">Kaomoji</button>
+        </div>
+
+        <div id="emoji-tab" class="tab-content" style="display: flex;"></div>
+        <div id="ascii-tab" class="tab-content" style="display: none;"></div>
+        </div>
+
+
 
             <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
 
