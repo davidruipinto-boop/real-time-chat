@@ -9,7 +9,7 @@
     <link rel="icon" type="images/png" href="logo_PinTalk.png" /> 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="script.js"></script>
-        <style>
+    <style>
         html {
             overflow: hidden;
             height: 100%;
@@ -573,7 +573,7 @@
             margin: 10px 0;
             justify-content: center;
         }
-
+        
         .so-tlm {
             display: none;
         }
@@ -585,6 +585,10 @@
             border-radius: 20px;
             font-weight: bold;
             color: #2e7d32;
+        }
+        
+        .tlm {
+            display: none;
         }
         /* Responsividade */
         
@@ -606,22 +610,29 @@
             #app-footer {
                 display: none;
             }
-            #message-input {
-                font-size: 0.5rem;
+            #message-input-tlm {
+                flex: 1;
+                padding: 12px;
+                border-radius: 12px;
+                border: 1px solid #ccc;
+                outline: none;
+                font-size: 0.65rem;
             }
-            #send-button {
+            #send-button-tlm {
                 font-size: 0.95rem;
                 padding: 10px 16px;
+                background-color: #C76E00;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
             }
-            #chat-wrapper {
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                max-width: 600px;
-                height: 60%;
-                padding: 16px;
-                box-sizing: border-box;
-                margin-bottom: 10px;
+            #send-button-tlm:hover {
+                background-color: #d86c00;
+            }
+            .pc {
+                display: none;
             }
         }
     </style>
@@ -651,7 +662,7 @@
 
 
 
-        <div id="chat-wrapper">
+    <div id="chat-wrapper">
         <div id="message-container"></div>
         <div id="typing-indicator" style="padding: 5px; color: lightgray;"></div>
         <form id="send-container">
@@ -671,9 +682,10 @@
 
 
 
-            <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
-
-            <button type="submit" id="send-button">Enviar</button>
+            <input type="text" class="pc" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
+            <input type="text" class="tlm" id="message-input-tlm" placeholder="Mensagem" autocomplete="off" />
+            <button type="submit" class="pc" id="send-button">Enviar</button>
+            <button type="submit" class="tlm" id="send-button-tlm">➤</button>
         </form>
         <div class="so-tlm">
             <br>
