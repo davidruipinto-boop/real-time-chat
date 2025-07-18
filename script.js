@@ -7,8 +7,15 @@ const fileInput = document.getElementById('file-input');
 
 
 let name = '';
+let pass = '';
+let pass_certa = false;
 
-
+while (pass_certa == false) {
+    pass = prompt('Insira a Password');
+    if (pass == 'SISnove') {
+        pass_certa = true;
+    } else alert('Password incorreta');
+}
 
 
 while (!name || name.length > 20) {
@@ -279,28 +286,16 @@ insertPanel.addEventListener('click', e => {
 
 const settingsButton = document.getElementById('settings-button');
 const settingsPanel = document.getElementById('settings-panel');
-const nameInput = document.getElementById('name-input');
-const saveNameBtn = document.getElementById('save-name');
 const themeSelect = document.getElementById('theme-select');
 
-let currentName = localStorage.getItem('username') || 'Anónimo';
-nameInput.value = currentName;
+
 
 // Toggle painel
 settingsButton.addEventListener('click', () => {
     settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
 });
 
-// Guardar novo nome
-saveNameBtn.addEventListener('click', () => {
-    const newName = nameInput.value.trim().substring(0, 20);
-    if (newName.length > 0) {
-        localStorage.setItem('username', newName);
-        currentName = newName;
-        alert("Nome alterado para: " + newName);
-        // Aqui podes emitir socket.emit('change-name', newName);
-    }
-});
+
 
 // Alternar tema
 themeSelect.addEventListener('change', () => {
@@ -314,3 +309,27 @@ themeSelect.addEventListener('change', () => {
 const temaGuardado = localStorage.getItem('tema') || 'claro';
 document.body.classList.add('tema-' + temaGuardado);
 themeSelect.value = temaGuardado;
+
+
+
+document.addEventListener("contextmenu", function(e) {
+    e.preventDefault();
+})
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && e.key === "I")) {
+        e.preventDefault();
+    }
+})
+
+
+function openFullscreen() {
+    const elem = document.documentElement;
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen(); // Safari
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen(); // IE11
+    }
+}
