@@ -7,16 +7,6 @@ const fileInput = document.getElementById('file-input');
 
 
 let name = '';
-let pass = '';
-let pass_certa = false;
-
-while (pass_certa == false) {
-    pass = prompt('Qual é a password');
-    if (pass != '090109') {
-        alert('Password errada');
-    }
-    else pass_certa = true;
-}
 
 
 
@@ -71,7 +61,7 @@ messageForm.addEventListener('submit', e => {
 
     if (file) {
         if (file.size > 0.7 * 1024 * 1024) { // 5MB limite
-            alert('O ficheiro é demasiado grande (máx. 0.5MB).');
+            alert('O ficheiro é demasiado grande (máx. 0.7MB).');
             return;
         }
 
@@ -204,84 +194,123 @@ const asciiTab = document.getElementById('ascii-tab');
 
 // Mostrar/esconder o painel ao clicar no botão
 insertButton.addEventListener('click', () => {
-  const isVisible = insertPanel.style.display === 'flex';
-  insertPanel.style.display = isVisible ? 'none' : 'flex';
+    const isVisible = insertPanel.style.display === 'flex';
+    insertPanel.style.display = isVisible ? 'none' : 'flex';
 });
 
 // Fechar painel apenas ao ENVIAR mensagem
 document.getElementById('send-container').addEventListener('submit', () => {
-  insertPanel.style.display = 'none';
+    insertPanel.style.display = 'none';
 });
 
 // Alternar abas entre Emojis e ASCII
 tabButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    // Tornar botão ativo
-    tabButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+    btn.addEventListener('click', () => {
+        // Tornar botão ativo
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
 
-    // Esconder todas as tabs
-    emojiTab.style.display = 'none';
-    asciiTab.style.display = 'none';
+        // Esconder todas as tabs
+        emojiTab.style.display = 'none';
+        asciiTab.style.display = 'none';
 
-    // Mostrar a tab correspondente
-    const tabId = btn.dataset.tab;
-    document.getElementById(`${tabId}-tab`).style.display = 'flex';
-  });
+        // Mostrar a tab correspondente
+        const tabId = btn.dataset.tab;
+        document.getElementById(`${tabId}-tab`).style.display = 'flex';
+    });
 });
 
 // Popular emojis
 const emojis = [
-  '😀','😃','😄','😁','😆','😅','😂','🤣','😊','😇','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋','😛','😝','😜','🤪','🤨','🧐','🤓','😎','🤩','🥳','😏','😒','😞','😔','😟','😕','🙁','☹️','😣','😖','😫','😩','🥺','😢','😭','😤','😠','😡','🤬','🤯','😳','🥵','🥶','😱','😨','😰','😥','😓'
+    '😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '😞', '😔', '😟', '😕', '🙁', '☹️', '😣', '😖', '😫', '😩', '🥺', '😢', '😭', '😤', '😠', '😡', '🤬', '🤯', '😳', '🥵', '🥶', '😱', '😨', '😰', '😥', '😓'
 ];
 emojiTab.innerHTML = emojis.map(e => `<span class="insert-item">${e}</span>`).join('');
 
 const asciiFaces = [
-    '¯\\_(ツ)_/¯', 
-    '( ͡° ͜ʖ ͡°)', 
-    '(╯°□°）╯︵ ┻━┻', 
-    'ʕ•ᴥ•ʔ', 
-    'ಠ_ಠ', 
-    '(ノಠ益ಠ)ノ彡┻━┻', 
-    '☜(⌒▽⌒)☞', 
-    '(͡• ͜ʖ ͡•)', 
-    '(ᵔᴥᵔ)', 
-    '(•‿•)', 
-    'ʕ•́ᴥ•̀ʔっ', 
-    'ʘ‿ʘ', 
-    '(ง ͠° ͟ل͜ ͡°)ง', 
-    '(▀̿Ĺ̯▀̿ ̿)', 
-    '(づ｡◕‿‿◕｡)づ', 
-    '(¬‿¬)', 
-    '◉_◉', 
-    '°Д°', 
+    '¯\\_(ツ)_/¯',
+    '( ͡° ͜ʖ ͡°)',
+    '(╯°□°）╯︵ ┻━┻',
+    'ʕ•ᴥ•ʔ',
+    'ಠ_ಠ',
+    '(ノಠ益ಠ)ノ彡┻━┻',
+    '☜(⌒▽⌒)☞',
+    '(͡• ͜ʖ ͡•)',
+    '(ᵔᴥᵔ)',
+    '(•‿•)',
+    'ʕ•́ᴥ•̀ʔっ',
+    'ʘ‿ʘ',
+    '(ง ͠° ͟ل͜ ͡°)ง',
+    '(▀̿Ĺ̯▀̿ ̿)',
+    '(づ｡◕‿‿◕｡)づ',
+    '(¬‿¬)',
+    '◉_◉',
+    '°Д°',
     '(•_•) ( •_•)>⌐■-■ (⌐■_■)',
-    'ヽ(・∀・)ﾉ',	
-    '(´• ω •`) ♡',	
+    'ヽ(・∀・)ﾉ',
+    '(´• ω •`) ♡',
     '(//▽//)',
     '(￣ヘ￣)',
     '(凸ಠ益ಠ)凸',
     '(╥_╥)',
-    '(×﹏×)',	
+    '(×﹏×)',
     'Σ(°△°|||)',
-    'ᕕ( ᐛ )ᕗ',	
+    'ᕕ( ᐛ )ᕗ',
     'ლ(ಠ_ಠ ლ)',
-    '(・_・;)',	
-    '(￢_￢)',	
+    '(・_・;)',
+    '(￢_￢)',
     'Σ(°ロ°)',
-    '(⊙_⊙)',	
+    '(⊙_⊙)',
     '( ° ∀ ° )ﾉﾞ',
     '(づ ◕‿◕ )づ',
     '( ´-ω･)︻┻┳══━一'
-    ];
+];
 
 
 asciiTab.innerHTML = asciiFaces.map(face => `<span class="insert-item">${face}</span>`).join('');
 // Inserir emoji/ASCII no campo de input
 insertPanel.addEventListener('click', e => {
-  if (e.target.classList.contains('insert-item')) {
-    const input = document.getElementById('message-input');
-    input.value += e.target.textContent;
-    input.focus();
-  }
+    if (e.target.classList.contains('insert-item')) {
+        const input = document.getElementById('message-input');
+        input.value += e.target.textContent;
+        input.focus();
+    }
 });
+
+
+const settingsButton = document.getElementById('settings-button');
+const settingsPanel = document.getElementById('settings-panel');
+const nameInput = document.getElementById('name-input');
+const saveNameBtn = document.getElementById('save-name');
+const themeSelect = document.getElementById('theme-select');
+
+let currentName = localStorage.getItem('username') || 'Anónimo';
+nameInput.value = currentName;
+
+// Toggle painel
+settingsButton.addEventListener('click', () => {
+    settingsPanel.style.display = settingsPanel.style.display === 'none' ? 'block' : 'none';
+});
+
+// Guardar novo nome
+saveNameBtn.addEventListener('click', () => {
+    const newName = nameInput.value.trim().substring(0, 20);
+    if (newName.length > 0) {
+        localStorage.setItem('username', newName);
+        currentName = newName;
+        alert("Nome alterado para: " + newName);
+        // Aqui podes emitir socket.emit('change-name', newName);
+    }
+});
+
+// Alternar tema
+themeSelect.addEventListener('change', () => {
+    const tema = themeSelect.value;
+    document.body.classList.remove('tema-claro', 'tema-escuro');
+    document.body.classList.add('tema-' + tema);
+    localStorage.setItem('tema', tema);
+});
+
+// Restaurar tema salvo
+const temaGuardado = localStorage.getItem('tema') || 'claro';
+document.body.classList.add('tema-' + temaGuardado);
+themeSelect.value = temaGuardado;
