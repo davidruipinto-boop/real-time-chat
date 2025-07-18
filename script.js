@@ -323,6 +323,7 @@ document.addEventListener("keydown", function(e) {
 })
 
 
+
 function openFullscreen() {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
@@ -333,3 +334,36 @@ function openFullscreen() {
         elem.msRequestFullscreen(); // IE11
     }
 }
+
+
+const typingIndicator = document.getElementById('typing-indicator');
+const typingUsers = new Set();
+let typingTimeout;
+
+// Quando o utilizador escreve algo
+messageInput.addEventListener('input', () => {
+    socket.emit('typing', name);
+
+    clearTimeout(typingTimeout);
+    typingTimeout = setTimeout(() => {
+        socket.emit('stop-typing', name);
+    }, 1000); // 1 segundo sem escrever
+});
+
+// Quando sai do campo de escrita
+messageInput.addEventListener('blur', () => {
+    socket.emit('stop-typing', name);
+});
+
+// Quando recebe a lista de quem está a escrever
+socket.on('update-typing', (typingNames) => {
+    const othersTyping = typingNames.filter(n => n !== name);
+
+    if (othersTyping.length === 1) {
+        typingIndicator.innerText = `${othersTyping[0]} está a escrever...`;
+    } else if (othersTyping.length > 1) {
+        typingIndicator.innerText = `${othersTyping.join(', ')} estão a escrever...`;
+    } else {
+        typingIndicator.innerText = '';
+    }
+});
