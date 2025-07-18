@@ -9,7 +9,7 @@
     <link rel="icon" type="images/png" href="logo_PinTalk.png" /> 
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <script defer src="script.js"></script>
-    <style>
+        <style>
         html {
             overflow: hidden;
             height: 100%;
@@ -87,6 +87,14 @@
             margin-bottom: 12px;
             display: flex;
             flex-direction: column;
+            /**/
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        #message-container::-webkit-scrollbar {
+            display: none;
         }
         /* Estilo para mensagens enviadas pelo próprio utilizador */
         
@@ -137,6 +145,10 @@
             background-color: #333;
             color: #eee;
             border: 1px solid #555;
+        }
+        
+        .tema-escuro a {
+            color: #787777;
         }
         
         .tema-escuro #insert-panel,
@@ -294,11 +306,12 @@
             position: relative;
             bottom: 0;
             left: 0;
-            margin-top: 10px;
+            margin-top: 35px;
         }
         
         #footer-logo {
             height: 30px;
+            border-radius: 10px;
         }
         
         #insert-button {
@@ -487,6 +500,7 @@
         
         #app-logo {
             height: 40px;
+            border-radius: 10px;
         }
         
         #app-header h1 {
@@ -603,11 +617,6 @@
 
     <div id="settings-panel" style="display: none;">
         <label>
-    Mudar nome:
-    <input type="text" id="name-input" maxlength="20" />
-    <button id="save-name">Guardar</button>
-  </label>
-        <label>
     Tema:
     <select id="theme-select">
       <option value="claro">Claro</option>
@@ -644,7 +653,7 @@
 
 
 
-            <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" />
+            <input type="text" id="message-input" placeholder="Escreve a tua mensagem..." autocomplete="off" onclick="openFullscreen()" />
 
             <button type="submit" id="send-button">Enviar</button>
         </form>
